@@ -21,7 +21,7 @@
 #### 2. 코드 구성
 |reducer store |middleware|presentational components|container|
 |--------------|----------|-------------------------|-------------------|
-|ations <br >types <br> reducers <br> index|sagas     |GithubProfileInfo        |GithubProfileLoader|
+|ations <br >types <br> reducers <br> index|sagas     |GithubProfileInfo <br> GithubUsernameForm         |GithubProfileLoader|
 
 * ations : 액션 타입과 액션 생성함수 정의
 
