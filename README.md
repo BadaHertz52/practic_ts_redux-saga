@@ -42,25 +42,42 @@
 * GithubProfileLoader : 스토어에 상태 조회, 액션을 디스패치 함 
 
 
-#### 3. 배운 내용 : redux-thunk 와 redux-saga 의 차이
-* redux-thunk 사용한 modules/github/tunks.ts 
-``` typescript
-function getUserProfileThunk(username :string):ThunkAction<void,RootState ,null , GithubAction>{
-   return async (dipatch ) => {
-   }
- };
+#### 3. 배운 내용 : 
+* actiosn.ts 
+```typescript
+export const getUserProfileAsync = createAsyncAction(
+  GET_USER_PROFILE,
+  GET_USER_PROFILE_SUCESS,
+  GET_USER_PROFILE_ERROR
+)<undefined, GithubProfile ,AxiosError>();
+
 ```
-
-* redux-thunk 사용한 modules/github/sagas.ts 
-``` typescript
+* sagas.ts 
+```typescript
 function* getUserProfileSaga( action: ReturnType<typeof getUserProfileAsync.request>){
-   try {
-     const userProfile :GithubProfile =yield call (getUserProfile , action.payload);
-     yield put (getUserProfileAsync.success(userProfile)) ;
-   } catch (e) {
-     yield put (getUserProfileAsync.failure(e));
-   }
- }
-````
+  try {
+    const userProfile :GithubProfile =yield call (getUserProfile , action.payload);
+    yield put (getUserProfileAsync.success(userProfile)) ;
+  } catch (e) {
+    yield put (getUserProfileAsync.failure(e));
+  }} 
+```
+* cf ) thunks.ts
+```typescript
+export function getUserProfileThunk(username :string):ThunkAction<void,RootState ,null , GithubAction>{
 
-redux-thunk에서는 조회한 username을 인자로 받고 redux-saga에서는 조회한 action을 인자로 받는다.  
+    return async (dispatch:Dispatch) => {
+        const {request ,success,failure} = getUserProfileAsync ;
+          dispatch(request()); //action 이 시작되었음을 알림
+          try {
+          const userProfile = await getUserProfile(username);
+            dispatch(success(userProfile));
+          } catch (e) {
+            dispatch(failure(e));
+}
+};
+}
+```
+GET_USER_PROFILE 의 type을 undefined 로 하면 redux-thunk 시에는 문제가 없었는데 redux-saga에서는  " 'EmptyAction<"github/GET_USER_PROFILE">' 형식에 'payload' 속성이 없습니다." 라는 오류 메세지가 뜬다. </br>
+이는 sagas.ts는 thunks.ts와 달리 request 시 받은 결과를 불러오기 때문이다. </br>
+따라서 GET_USER_PROFILE 의 type을 request의 결과값과 같은 string 으로 바꾸면 해당 오류를 수정할 수 있다. 
