@@ -1,7 +1,7 @@
 # Typescript 에서 redux middleware 사용하기 2. redux-saga
 
 ### <"Typescript 에서 redux middleware 사용하기" 시리즈>
-###### * 위의 시리즈는 **[해당 수업 내용](https://react.vlpt.us/using-typescript/06-ts-redux-middleware.html)** 을 실습하고 공부하며 개인적으로 보충한 것입니다. ☺
+###### * 위의 시리즈는✨ **[해당 수업 내용](https://react.vlpt.us/using-typescript/06-ts-redux-middleware.html)** 을 실습하고 공부하며 개인적으로 보충한 것입니다. ☺
 
 #### 1. 시리즈
   * [redux- thunk](https://github.com/BadaHertz52/practice_ts_redux-thunk)
